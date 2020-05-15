@@ -1,4 +1,5 @@
 theme = "cupper-hugo-theme"
-baseURL = "http://example.org/"
+#baseURL = "http://unresolved.netlify.app/"
+baseURL = "/"
 languageCode = "en-us"
 title = "unresolved"
