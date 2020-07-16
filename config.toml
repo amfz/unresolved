@@ -3,3 +3,31 @@ theme = "cupper-hugo-theme"
 baseURL = "/"
 languageCode = "en-us"
 title = "unresolved"
+
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+
+[params]
+    author = "AM"
+    dateFormat = "2006.01.02"
+    description = "I am very bad at talking about myself."
+
+[menu]
+  [[menu.nav]]
+    name = "Home"
+    url = "/"
+    weight = 1
+
+  [[menu.nav]]
+    name = "About"
+    url = "/about/"
+    weight = 2
+    
+    [[menu.nav]]
+    name = "Blog"
+    url = "/post/"
+    weight = 3
+    
+    [[menu.nav]]
+    name = "Tags"
+    url = "/tags/"
+    weight = 4

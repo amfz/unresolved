@@ -6,10 +6,21 @@
     <description>Recent content in Blog on unresolved</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 14 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 14 Jul 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Scraping two-column PDFs</title>
+      <link>/post/scraping-two-column-pdfs/</link>
+      <pubDate>Tue, 14 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/scraping-two-column-pdfs/</guid>
+      <description>What I was trying to do Scrape text from PDFs where the text was laid out in two columns.
+What I tried first: pdftools and readr Many text scraping tutorials in R recommend using pdftools to extract text from a PDF file. So far, so straightforward.
+library(pdftools)library(tidyverse)text &amp;lt;- pdf_text(&amp;quot;my_file.pdf&amp;quot;)That results in a character vector, but it still needs cleaning &amp;ndash; each element in the vector is a chunk of text, and there&amp;rsquo;s loads of whitespace throughout.</description>
+    </item>
     
     <item>
       <title>Tearing off the band-aid</title>

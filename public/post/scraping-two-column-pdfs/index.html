@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <meta name="generator" content="Hugo 0.70.0" />
-  <link rel="canonical" href="/post/">
+  <link rel="canonical" href="/post/scraping-two-column-pdfs/">
 
   
 
@@ -32,7 +32,7 @@
 
   
   
-  <title>Blog | unresolved</title>
+  <title>Scraping two-column PDFs | unresolved</title>
 </head>
 
   <body>
@@ -210,33 +210,73 @@
         <div>
           
   <main id="main">
-    <h1>Blog</h1>
-    <ul class="patterns-list">
+    <h1>
+      > Scraping two-column PDFs
+    </h1>
+
+    <div class="date">
+      
+      
+      <strong aria-hidden="true">Publish date: </strong>2020.07.14
+      
+        
+      
+    </div>
+
     
-      <li>
-        <h2>
-          <a href="/post/scraping-two-column-pdfs/">
-            <svg class="bookmark" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
-              <use xlink:href="#bookmark"></use>
-            </svg>
-            Scraping two-column PDFs
-          </a>
-        </h2>
-      </li>        
+      <div class="tags">
+        <strong aria-hidden="true">Tags: </strong>
+        <ul aria-label="tags">
+          
+            <li>
+              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
+                <use xlink:href="#tag"></use>
+              </svg>
+              
+              <a href="/tags/code-journal/">code-journal</a>
+            </li>
+          
+            <li>
+              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
+                <use xlink:href="#tag"></use>
+              </svg>
+              
+              <a href="/tags/r/">R</a>
+            </li>
+          
+        </ul>
+      </div>
     
-      <li>
-        <h2>
-          <a href="/post/first-post/">
-            <svg class="bookmark" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
-              <use xlink:href="#bookmark"></use>
-            </svg>
-            Tearing off the band-aid
-          </a>
-        </h2>
-      </li>        
     
-    </ul>
+    
+      
+
+
+    
+
+    <h3 id="what-i-was-trying-to-do">What I was trying to do</h3>
+<p>Scrape text from PDFs where the text was laid out in two columns.</p>
+<h3 id="what-i-tried-first-pdftools-and-readr">What I tried first: pdftools and readr</h3>
+<p>Many text scraping tutorials in R recommend using <code>pdftools</code> to extract text from a PDF file. So far, so straightforward.</p>
+<pre><code>library(pdftools)
+library(tidyverse)
+
+text &lt;- pdf_text(&quot;my_file.pdf&quot;)
+</code></pre><p>That results in a character vector, but it still needs cleaning &ndash; each element in the vector is a chunk of text, and there&rsquo;s loads of whitespace throughout. One way to clean things up is to use <code>readr::read_lines()</code> to expand out the vector so that each line in the file is its own element, and then use <code>stringr::str_squish()</code> to trim whitespace.</p>
+<pre><code>lines &lt;- readr::read_lines(text) %&gt;%
+    str_squish()
+</code></pre><p>However, when looking at the results, it became clear that the text had been garbled. Rather than reading text in line-by-line within one column before moving to the next, <code>pdf_text()</code> read text in line-by-line across both columns.</p>
+<h3 id="what-i-ended-up-using-tabulizer">What I ended up using: tabulizer</h3>
+<p>I ended up switching from <code>pdftools</code> to <a href="https://cran.r-project.org/web/packages/tabulizer/index.html"><code>tabulizer</code></a>, which uses the Tabula Java library to extract tables and text from PDFs. Its <code>extract_text()</code> function correctly read the text going down one column first, then the other, and even returned the result as a single element in a character vector.</p>
+<pre><code>lines &lt;- tabulizer::extract_text(&quot;my_file.pdf&quot;) %&gt;% 
+    stringr::str_split(&quot;\r\n&quot;)
+</code></pre><p>A word about the second part of this code snippet. As it turned out, the output of <code>extract_text()</code> was too long to bind to a data frame record as I needed to do next. The text was getting truncated. To address that problem, I split the scraped text along carriage returns with <code>stringr::str_split()</code>, resulting in a list of lines. This list could then be bound in its entirety to the data frame and written to an RDS file.</p>
+
   </main>
+  <div id="disqus-container">
+  
+</div>
+
 
           <footer role="contentinfo">
   <div>

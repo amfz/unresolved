@@ -4,16 +4,36 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2020-05-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-07-14T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/hello-world/</loc>
-    <lastmod>2020-05-14T00:00:00+00:00</lastmod>
+    <loc>/tags/code-journal/</loc>
+    <lastmod>2020-07-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/r/</loc>
+    <lastmod>2020-07-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/scraping-two-column-pdfs/</loc>
+    <lastmod>2020-07-14T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/tags/</loc>
+    <lastmod>2020-07-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/about/</loc>
+    <lastmod>2020-05-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/hello-world/</loc>
     <lastmod>2020-05-14T00:00:00+00:00</lastmod>
   </url>
   
@@ -25,11 +45,6 @@
   <url>
     <loc>/</loc>
     <lastmod>2017-06-26T18:27:58+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/about/</loc>
-    <lastmod>2014-04-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>

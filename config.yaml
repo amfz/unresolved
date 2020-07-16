@@ -1,10 +1,10 @@
-baseURL: https://example.com
+baseURL: unresolved.netlify.app
 languageCode: en-us
 defaultContentLanguage: en
-title: Cupper
+title: A Site
 theme: cupper-hugo-theme
-googleAnalytics: UA-123456789-1
-disqusShortname: yourdiscussshortname
+#googleAnalytics: UA-123456789-1
+#disqusShortname: yourdiscussshortname
 enableGitInfo: true
 
 taxonomies:
@@ -19,29 +19,9 @@ imaging:
 params:
   description: An accessibility-friendly Hugo theme, ported from the [original Cupper](https://github.com/ThePacielloGroup/cupper) project.
   homeMetaContent: An accessibility-friendly Hugo theme, ported from the original Cupper project.
-  footer: Made with [Hugo](https://gohugo.io/). Themed by [Cupper](https://github.com/zwbetz-gh/cupper-hugo-theme). Deployed to [Netlify](https://www.netlify.com/).
-  # For more date formats see https://gohugo.io/functions/format/
-  dateFormat: Jan 2, 2006
+  footer: Made with [Hugo](https://gohugo.io/). Modified from [Cupper](https://github.com/zwbetz-gh/cupper-hugo-theme). Deployed to [Netlify](https://www.netlify.com/).
   codePenUser: someUser
   katex: true
-
-menu:
-  nav:
-    - name: Home
-      url: /
-      weight: 1
-    - name: Blog
-      url: /post/
-      weight: 2
-    - name: Tags
-      url: /tags/
-      weight: 3
-    - name: About
-      url: /about/
-      weight: 4
-    - name: RSS
-      url: /index.xml
-      weight: 5
 
 markup:
   defaultMarkdownHandler: goldmark

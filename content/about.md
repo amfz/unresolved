@@ -1,6 +1,6 @@
 ---
-date: "2014-04-09"
+date: "2020-05-15"
 title: About
 ---
 
-aaaaaaaaaaaa
+This is an attempt at a site, a work in progress.
