@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <meta name="generator" content="Hugo 0.70.0" />
-  <link rel="canonical" href="/tags/r/">
+  <link rel="canonical" href="/post/r-aws/">
 
   
 
@@ -32,7 +32,7 @@
 
   
   
-  <title>R | unresolved</title>
+  <title>R, AWS, and other letters | unresolved</title>
 </head>
 
   <body>
@@ -181,7 +181,7 @@
       
       
       
-      <a href="/post/" >
+      <a href="/post/" aria-current="page">
          
           <use xlink:href="#bookmark"></use>
         </svg>
@@ -194,7 +194,7 @@
       
       
       
-      <a href="/tags/" aria-current="page">
+      <a href="/tags/" >
          
           <use xlink:href="#bookmark"></use>
         </svg>
@@ -210,44 +210,158 @@
         <div>
           
   <main id="main">
-    <h1>R</h1>
-    <ul class="patterns-list">
+    <h1>
+      > R, AWS, and other letters
+    </h1>
+
+    <div class="date">
+      
+      
+      <strong aria-hidden="true">Publish date: </strong>2020.08.05
+      
+        
+      
+    </div>
+
     
-      <li>
-        <h2>
-          <a href="/post/r-aws/">
-            >
-              <use xlink:href="#bookmark"></use>
-            </svg>
-            R, AWS, and other letters
-          </a>
-        </h2>
-      </li>        
+      <div class="tags">
+        <strong aria-hidden="true">Tags: </strong>
+        <ul aria-label="tags">
+          
+            <li>
+              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
+                <use xlink:href="#tag"></use>
+              </svg>
+              
+              <a href="/tags/r/">R</a>
+            </li>
+          
+            <li>
+              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
+                <use xlink:href="#tag"></use>
+              </svg>
+              
+              <a href="/tags/code-journal/">code-journal</a>
+            </li>
+          
+            <li>
+              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
+                <use xlink:href="#tag"></use>
+              </svg>
+              
+              <a href="/tags/aws/">AWS</a>
+            </li>
+          
+        </ul>
+      </div>
     
-      <li>
-        <h2>
-          <a href="/post/rmd-tricks/">
-            >
-              <use xlink:href="#bookmark"></use>
-            </svg>
-            RMarkdown tricks
-          </a>
-        </h2>
-      </li>        
     
-      <li>
-        <h2>
-          <a href="/post/scraping-two-column-pdfs/">
-            >
-              <use xlink:href="#bookmark"></use>
-            </svg>
-            Scraping two-column PDFs
-          </a>
-        </h2>
-      </li>        
     
-    </ul>
+      
+
+
+    
+
+    <p>Got a crash course in working with Amazon Web Services today.</p>
+<h3 id="what-i-was-trying-to-do">What I was trying to do</h3>
+<p>Scale up a text processing project by moving to AWS. The scale-up will need an estimated 100 GB of storage, and an unknown amount of computing power.</p>
+<h3 id="what-i-did">What I Did</h3>
+<h4 id="1-create-a-new-ec2-instance">1. Create a new EC2 instance</h4>
+<p>EC2 stands for Elastic Compute Cloud and provides pay-as-you-go virtual computing environments. There are <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html">a ton of features</a>, but the main ones to pay attention to for now are:</p>
+<ul>
+<li>the <strong>instance type</strong>, which defines the CPU, memory, storage, and networking capacities of the virtual machine;</li>
+<li>the <strong>Amazon Machine Image (AMI)</strong>, which is a template for the operating system and additional software the instance should start out with;</li>
+<li>and storage options for the virtual machine. <strong>Instance store volumes</strong> provide temporary storage that gets deleted when the instance is stopped (i.e., shut down) or terminated (i.e., deleted). Amazon <strong>Elastic Block Store (EBS)</strong> volumes provide persistent storage &ndash; they&rsquo;re like the hard drive on a physical computer.</li>
+</ul>
+<p>Creating an instance, then, still entails several decisions, even before getting to the software installation stage.</p>
+<p>Thankfully, Louis Aslett has simplified the process by creating <a href="https://www.louisaslett.com/RStudio_AMI/">RStudio Server AMIs</a>. We still have to choose an instance type, but the image features 20 GB default EBS and includes a ton of useful software.</p>
+<h5 id="bonus-failure-notes">Bonus Failure Notes</h5>
+<p>I initially tried configuring everything from scratch, following the Longer, Detailed Way steps in <a href="https://jagg19.github.io/2019/08/aws-r/">Jagger Villalobos&rsquo;s tutorial</a>. It&rsquo;s a great tutorial, but the long way turned into a time-consuming headache for me for two reasons. First, the tutorial assumes you&rsquo;re using a UNIX-like operating system to work with the EC2 instance. While the instance is a virtual computer, We need to access it with an actual machine. Leaving access unregulated is a bad idea, which is where key pairs come in. The EC2 instance stores the public key, and the corresponding private key is needed to log in. Key management is different in Windows than in Linux and Mac OS. I eventually figured out <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html">how to connect with PuTTY</a>.</p>
+<p>In retrospect, I should have sucked it up and updated my Windows Subsystem for Linux, but I still would have hit the next hurdle, which was that I chose the wrong Linux AMI. I unwittingly chose the Amazon Linux AMI, uses yum as its package manager. The commands to download R, RStudio, and other software are written for a machine running Ubuntu or Debian, which use apt-get instead of yum. The commands are different between the package managers. I&rsquo;d like to be fluent in both, but today is not the day to accomplish that.</p>
+<h4 id="2-create-an-s3-bucket">2. Create an S3 bucket</h4>
+<p>S3 stands for Simple Storage Service and is exactly what it says &ndash; simple, web-based object storage. EC2 instances come with persistent storage in the form of EBS volumes. Why create an S3 bucket then? One, S3 storage is cheaper. Two, files in an S3 bucket can be accessed by multiple computers (even physical, non-AWS-hosted ones), whereas an EBS volume is mounted to one EC2 instance at a time. This means that it&rsquo;s possible for different people on different machines to work wiht the data. (<a href="https://dzone.com/articles/confused-by-aws-storage-options-s3-ebs-amp-efs-explained">See here</a> for a table comparing different AWS storage options and <a href="https://www.missioncloud.com/blog/resource-amazon-ebs-vs-efs-vs-s3-picking-the-best-aws-storage-option-for-your-business">here</a> for another comparison of use cases).</p>
+<p>Creating the bucket itself was the most straightforward part of the process &ndash; it&rsquo;s just a wizard. I chose to encrypt objects automatically with AES-256, and kept the default option to block all public access. One thing worth noting is that access requests should be logged to a different bucket.</p>
+<h4 id="3-set-up-an-iam-policy">3. Set up an IAM policy</h4>
+<p>Even though all the data I plan on hosting is publicly available, it&rsquo;s worth getting in the habit of securing S3 buckets. To do this, I set up an <a href="https://console.aws.amazon.com/iam/home">Identity and Access Management (IAM)</a> policy and role, then attached the role to my EC2 instance.</p>
+<p>First, the policy. Amazon offers several policies out of the box, but I wanted one that restricted access to just the bucket where project data will be stored. The policy below isn&rsquo;t perfect, but it&rsquo;s a workable first iteration that does what I need it to do. It was modified from the policy <a href="https://aws.amazon.com/blogs/big-data/running-r-on-aws/">in this old AWS blog post</a>, which unfortunately got me an error when I tried to use it to access my S3 bucket from RStudio Server.</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;s3:GetBucketLocation&quot;,
+                &quot;s3:ListAllMyBuckets&quot;
+            ],
+            &quot;Resource&quot;: [
+                &quot;arn:aws:s3:::*&quot;
+            ]
+        },
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;s3:*&quot;
+            ],
+            &quot;Resource&quot;: [
+                &quot;arn:aws:s3:::mybucket&quot;,
+                &quot;arn:aws:s3:::mybucket/*&quot;
+            ]
+        }
+    ]
+}
+</code></pre><p>Then, I created the role, which is a straightforward, wizard-driven process. Finally, I attached the role to the EC2 instance by right-clicking and assigning the role.</p>
+<p><img src="/images/ec2-iam-role.jpg" alt=""></p>
+<h5 id="alt-route-with-users-and-groups">Alt Route with Users and Groups</h5>
+<p>An alternative to creating a role is to create a user with programmatic access. This generates an access key ID and secret access key that can be used with various AWS tools, including to access S3 via our scripts. Going this route enables S3 access from other machines besides our EC2 instance.</p>
+<p><img src="/images/iam-user-1.jpg" alt=""></p>
+<p>The second screen lets us add the user to a group to which IAM policies are attached. While it&rsquo;s best practice to manage permissions on a group basis, it is possible to attach policies directly.</p>
+<p><img src="/images/iam-user-2.jpg" alt=""></p>
+<p>The rest of the wizard can be stepped through. Access keys can be generated from the IAM console &ndash; click on the user name, then the Security credentials tab.</p>
+<p><img src="/images/iam-user-3.jpg" alt=""></p>
+<h4 id="4-configure-rstudio-server">4. Configure RStudio Server</h4>
+<p>After all this, it&rsquo;s still not quite done. The AMI comes loaded with RStudio and packages like the tidyverse, but a few more libraries are needed to be able to access the S3 bucket.</p>
+<p><code>aws.s3</code> provides a way to access buckets and read and save objects to them.</p>
+<p>The bucket isn&rsquo;t public, so I also need a way to pass credentials. There are a couple of ways to do this.</p>
+<p>Since I set up an IAM role and attached it to the EC2 instance, the easiest way to ensure access to the S3 bucket is by installing the <code>aws.ec2metadata</code> package. There&rsquo;s no need to load the library once it&rsquo;s installed &ndash; it just needs to be installed to work.</p>
+<pre><code>install.packages(&quot;aws.s3&quot;, &quot;aws.ec2metadata&quot;)
+library(aws.s3)
+
+# confirm access
+bucketlist()
+</code></pre><p>The policy I set up makes all S3 buckets visible, even if the EC2 instance doesn&rsquo;t have read/write access, so not every bucket name returned can actually be accessed.</p>
+<h5 id="an-alternative-method">An alternative method</h5>
+<p>Going the alt route and managing access with users, groups, and keys (instead of with roles), access details can be added to the <code>.Renviron</code> file. <code>usethis</code> provides a way to modify the <code>.Renviron</code>. <code>devtools</code> is a prerequisite for <code>usethis</code>.</p>
+<pre><code>install.packages(&quot;devtools&quot;)
+install.packages(&quot;usethis&quot;)
+
+# edit the environment file
+usethis::edit_r_environ()
+</code></pre><p>Update <code>.Renviron</code> accordingly, save and restart the R session. For the East Coast, the default region is probably &ldquo;us-east-2&rdquo;.</p>
+<pre><code>AWS_ACCESS_KEY_ID = &quot;your-key-here&quot;
+AWS_SECRET_ACCESS_KEY = &quot;your-secret-here&quot;
+AWS_DEFAULT_REGION = &quot;region-here&quot;
+</code></pre><h4 id="5-access-the-bucket-from-rstudio">5. Access the bucket from RStudio</h4>
+<p>If all goes well, we should be able to see a list of accessible buckets with <code>aws.s3::bucketlist()</code>, and view the contents of a bucket with <code>aws.s3::get_bucket(&quot;bucket_name&quot;)</code></p>
+<pre><code>library(aws.s3)
+
+# confirm access
+bucketlist()
+
+# check out bucket contents
+get_bucket(&quot;mybucket&quot;)
+
+# load a csv in the bucket to a data frame
+counts &lt;- s3read_using(read.csv, 
+                       object = &quot;counts.csv&quot;, 
+                       bucket = &quot;mybucket&quot;)
+</code></pre><h4 id="n-connect-the-github-repo">n. Connect the GitHub Repo</h4>
+<p>We still have to bring in the actual project code. This process is the same on the EC2 RStudio Server instance as it is on RStudio desktop, thankfully.</p>
+
   </main>
+  <div id="disqus-container">
+  
+</div>
+
 
           <footer role="contentinfo">
   <div>

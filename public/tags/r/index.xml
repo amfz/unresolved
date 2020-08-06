@@ -6,10 +6,33 @@
     <description>Recent content in R on unresolved</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 14 Jul 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 05 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>R, AWS, and other letters</title>
+      <link>/post/r-aws/</link>
+      <pubDate>Wed, 05 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/r-aws/</guid>
+      <description>Got a crash course in working with Amazon Web Services today.
+What I was trying to do Scale up a text processing project by moving to AWS. The scale-up will need an estimated 100 GB of storage, and an unknown amount of computing power.
+What I Did 1. Create a new EC2 instance EC2 stands for Elastic Compute Cloud and provides pay-as-you-go virtual computing environments. There are a ton of features, but the main ones to pay attention to for now are:</description>
+    </item>
+    
+    <item>
+      <title>RMarkdown tricks</title>
+      <link>/post/rmd-tricks/</link>
+      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/rmd-tricks/</guid>
+      <description>Quick, incomplete notes on things that make life easier when publishing to R markdown and xaringan.
+Managing Citations and References Confession: Up til recently, I manually managed all my figure references and citations. Moving a table around meant updating the number in the text. Bibliographic references, similarly, were diligently typed up, or, if I was lucky, copy-pasted.
+Yeah, not doing that anymore.
+If you name r chunks (e.g., {r fig1 [code here]}) you can refer to them in the main text with \@ref(fig:fig1) for figures or \@ref(tab:mytable) for tables.</description>
+    </item>
     
     <item>
       <title>Scraping two-column PDFs</title>
