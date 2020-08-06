@@ -24,3 +24,5 @@ So, for example, the pseudocode below would result in a plot titled "Figure n: A
 ggplot()
 
 ```
+
+[To be continued]
