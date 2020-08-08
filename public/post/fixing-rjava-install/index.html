@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <meta name="generator" content="Hugo 0.70.0" />
-  <link rel="canonical" href="/tags/">
+  <link rel="canonical" href="/post/fixing-rjava-install/">
 
   
 
@@ -32,7 +32,7 @@
 
   
   
-  <title>Tags | unresolved</title>
+  <title>Setting up rJava properly | unresolved</title>
 </head>
 
   <body>
@@ -181,7 +181,7 @@
       
       
       
-      <a href="/post/" >
+      <a href="/post/" aria-current="page">
          
           <use xlink:href="#bookmark"></use>
         </svg>
@@ -194,7 +194,7 @@
       
       
       
-      <a href="/tags/" aria-current="page">
+      <a href="/tags/" >
          
           <use xlink:href="#bookmark"></use>
         </svg>
@@ -210,77 +210,89 @@
         <div>
           
   <main id="main">
-    <h1>Tags</h1>
-    <ul class="patterns-list">
+    <h1>
+      > Setting up rJava properly
+    </h1>
+
+    <div class="date">
       
-        <li>
-          <h2>
-            <a href="/tags/aws/">
+      
+      <strong aria-hidden="true">Publish date: </strong>2020.08.08
+      
+        
+      
+    </div>
+
+    
+      <div class="tags">
+        <strong aria-hidden="true">Tags: </strong>
+        <ul aria-label="tags">
+          
+            <li>
               <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
                 <use xlink:href="#tag"></use>
               </svg>
-              (1) AWS
-            </a>
-          </h2>
-        </li>
-      
-        <li>
-          <h2>
-            <a href="/tags/code-journal/">
+              
+              <a href="/tags/code-journal/">code-journal</a>
+            </li>
+          
+            <li>
               <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
                 <use xlink:href="#tag"></use>
               </svg>
-              (4) code-journal
-            </a>
-          </h2>
-        </li>
-      
-        <li>
-          <h2>
-            <a href="/tags/hello-world/">
+              
+              <a href="/tags/r/">R</a>
+            </li>
+          
+            <li>
               <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
                 <use xlink:href="#tag"></use>
               </svg>
-              (1) hello-world
-            </a>
-          </h2>
-        </li>
-      
-        <li>
-          <h2>
-            <a href="/tags/java/">
+              
+              <a href="/tags/java/">Java</a>
+            </li>
+          
+            <li>
               <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
                 <use xlink:href="#tag"></use>
               </svg>
-              (1) Java
-            </a>
-          </h2>
-        </li>
+              
+              <a href="/tags/sudo-what/">sudo-what</a>
+            </li>
+          
+        </ul>
+      </div>
+    
+    
+    
       
-        <li>
-          <h2>
-            <a href="/tags/r/">
-              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
-                <use xlink:href="#tag"></use>
-              </svg>
-              (4) R
-            </a>
-          </h2>
-        </li>
-      
-        <li>
-          <h2>
-            <a href="/tags/sudo-what/">
-              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
-                <use xlink:href="#tag"></use>
-              </svg>
-              (1) sudo-what
-            </a>
-          </h2>
-        </li>
-      
-    </ul>
+
+
+    
+
+    <p>Back to working with RStudio Server on an EC2 instance. This instance is running on Ubuntu 18.04, installed from <a href="https://www.louisaslett.com/RStudio_AMI/">Louis Aslett&rsquo;s RStudio AMIs</a>. The AMIs come with the Java 8 Runtime Environment, which I assumed meant that I could install and  Java-dependent R packages out of the box.</p>
+<p>That turned out not to be the case, and I hit a snag trying to install <code>tabulizer</code>:</p>
+<pre><code>ERROR: dependency ‘rJava’ is not available for package ‘tabulizerjars’
+</code></pre><p>Then, trying to install <code>rJava</code> nets this error:</p>
+<pre><code>configure: error: One or more Java configuration variables are not set.
+Make sure R is configured with full Java support (including JDK). Run
+R CMD javareconf
+as root to add Java support to R.
+</code></pre><p>Following the error message, I switched to the terminal. ran <code>sudo R CMD javareconf</code>, and hit another error:</p>
+<pre><code>conftest.c:1:10: fatal error: jni.h: No such file or directory
+</code></pre><p>Googling around, I found <a href="https://shahronak47.wordpress.com/2016/12/29/install-rjava-package-in-r/">Ronak Shah&rsquo;s blog post</a> describing his journey getting rJava installed. I knew Java was included on the AMI, but figured I may as well see what happens installing it over, so I ran the following commands in the terminal.</p>
+<pre><code>sudo apt-get update
+sudo apt-get install default-jre
+sudo apt-get install default-jdk
+</code></pre><p><code>sudo apt-get update</code> did update some things. Nothing changed after running <code>sudo apt-get install default-jre</code>, as the Java Runtime Environment bundled in the AMI was already the newest version. Four new packages for the Java Development Kit were installed when I ran <code>sudo apt-get install default-jdk</code>, including default-jdk itself, suggesting the problem was that I didn&rsquo;t have the Java Development Kit installed.</p>
+<p>After that, I ran <code>sudo R CMD javareconf</code> again, successfully updating the instance&rsquo;s Java configuration this time.</p>
+<p>With that done, I was able to go back to the R console to install <code>tabulizer</code>.</p>
+
   </main>
+  <div id="disqus-container">
+  
+</div>
+
 
           <footer role="contentinfo">
   <div>

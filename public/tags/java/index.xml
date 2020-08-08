@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Java on unresolved</title>
+    <link>/tags/java/</link>
+    <description>Recent content in Java on unresolved</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 08 Aug 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Setting up rJava properly</title>
+      <link>/post/fixing-rjava-install/</link>
+      <pubDate>Sat, 08 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/fixing-rjava-install/</guid>
+      <description>Back to working with RStudio Server on an EC2 instance. This instance is running on Ubuntu 18.04, installed from Louis Aslett&amp;rsquo;s RStudio AMIs. The AMIs come with the Java 8 Runtime Environment, which I assumed meant that I could install and Java-dependent R packages out of the box.
+That turned out not to be the case, and I hit a snag trying to install tabulizer:
+ERROR: dependency ‘rJava’ is not available for package ‘tabulizerjars’Then, trying to install rJava nets this error:</description>
+    </item>
+    
+  </channel>
+</rss>
